@@ -1,3 +1,4 @@
 {
-    "python.pythonPath": "/Users/thomaswillson/virtualenvs/covid-api/bin/python"
+    "python.pythonPath": "/Users/thomaswillson/virtualenvs/covid-api/bin/python",
+    "javascript.implicitProjectConfig.experimentalDecorators": true
 }

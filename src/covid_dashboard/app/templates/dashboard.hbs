@@ -1,0 +1,25 @@
+
+<div class="container-fluid">
+    <style>
+        #locale-tree {
+            height: 65vh;
+        }
+    </style>
+
+    <div class="row">
+        <div class="col-md-12">
+            <h1>Covid Dashboard</h1>
+        </div>
+        <div id="left-col" class="col-md-2">
+            <h3>Plots</h3>
+            <ul class="list-group overflow-auto" style="height: 20vh;" id="plot-types-container"></ul>
+            <h3>Locations</h3>
+            <LocaleTree class="overflow-auto" @states={{@model}} @id="locale-tree" />
+        </div>
+        <div id="right-col" class="col-md-10">
+            <div id="chart-container">
+                <h2>Some chart here!</h2>
+            </div>
+        </div>
+    </div>
+</div>

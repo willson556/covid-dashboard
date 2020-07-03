@@ -8,7 +8,7 @@ cache = Cache()
 api = None
 
 
-from .api import DataEndpoint, StateEndpoint, CountyEndpoint
+from .api import DataEndpoint, StateEndpoint, CountyEndpoint, CountiesForStateEndpoint
 
 load_dotenv()
 app = Flask(__name__)
@@ -17,6 +17,7 @@ cache.init_app(app, config={'CACHE_TYPE': 'simple'})
 api.add_resource(DataEndpoint, '/api/data')
 api.add_resource(StateEndpoint, '/api/states')
 api.add_resource(CountyEndpoint, "/api/counties")
+api.add_resource(CountiesForStateEndpoint, "/api/counties_for_state")
 
 @app.errorhandler(400)
 @app.errorhandler(422)

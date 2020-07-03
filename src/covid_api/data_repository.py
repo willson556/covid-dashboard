@@ -29,7 +29,7 @@ def get_state_level_data() -> pd.DataFrame:
 
 @cache.memoize(timeout=86400)
 def get_state_populations() -> pd.DataFrame:
-    state_populations = pd.read_csv("src/covid_api/static-data/state-population-est2019.csv", index_col='State', usecols=['State', '2019'], keep_default_na=False, thousands=',', sep=',', engine='python')
+    state_populations = pd.read_csv("src/covid_api/static-data/state-population-est2019.csv", index_col='State', usecols=['State', 'StateFull', '2019'], keep_default_na=False, thousands=',', sep=',', engine='python')
     state_populations["2019"] = state_populations["2019"].astype('int')
     return state_populations
 
@@ -108,10 +108,43 @@ class DataRepository(object):
         data.positive[state_abbrev] = state_data["positiveIncrease"].smooth()
         data.tests = state_data["totalTestResultsIncrease"].smooth()
 
-    def get_available_states(self):
-        return list(get_state_populations().index.values)
+    def get_state_data(self):
+        counter = 0
+        def transform_state(key, value):
+            nonlocal counter
+            counter += 1
+            return {
+                "id": counter,
+                "name": value["StateFull"],
+                "abbrev": key,
+                "population": value["2019"],
+            }
+
+        state_dict = get_state_populations().to_dict(orient='index')
+        return [transform_state(key, value) for key, value in state_dict.items()]
+
+    def _get_valid_locales(self):
+        locale_info = get_locale_info()
+        return locale_info[locale_info.index.notnull()]
 
     def get_available_locales(self):
-        locale_info = get_locale_info()
-        return locale_info[locale_info.index.notnull()].to_dict(orient='index')
+        return self._get_valid_locales().to_dict(orient='index')
+
+    def get_available_locales_for_state(self, state_abbrev):
+        def transform_locale(key, value):
+            return {
+                "id": int(key),
+                "name": value["Admin2"],
+                "full_name": value['Combined_Key'],
+                "population": value['Population'],
+            }
+
+
+        state = next(filter(lambda s: s['abbrev'] == state_abbrev, self.get_state_data()))['name']
+        locales = self._get_valid_locales()
+        filtered_locales = locales[(locales['Province_State'] == state) &
+                                   (locales['Admin2']) &
+                                   (locales["Lat"])].to_dict(orient='index')
+        return [transform_locale(fips, locale) for fips, locale in filtered_locales.items()]
+        
        

@@ -1,0 +1,6 @@
+<ul class="list-group overflow-auto" id="{{@id}}">
+    {{log states}}
+    {{#each @states as |state|}}
+        <LocaleTreeState @state={{state}} />
+    {{/each}}
+</ul>
