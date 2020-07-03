@@ -2,21 +2,26 @@
 <div class="container-fluid">
     <style>
         #locale-tree {
-            height: 65vh;
+            height: 60vh;
+        }
+
+        #plot-picker {
+            height: 25vh;
         }
     </style>
 
     <div class="row">
         <div class="col-md-12">
-            <h1>Covid Dashboard</h1>
+            <h1>COVID-19 Dashboard</h1>
+            <hr>
         </div>
-        <div id="left-col" class="col-md-2">
+        <div id="left-col" class="col-md-3">
             <h3>Plots</h3>
-            <ul class="list-group overflow-auto" style="height: 20vh;" id="plot-types-container"></ul>
+            <PlotPicker class="overflow-auto" @id="plot-picker" />
             <h3>Locations</h3>
             <LocaleTree class="overflow-auto" @states={{@model}} @id="locale-tree" />
         </div>
-        <div id="right-col" class="col-md-10">
+        <div id="right-col" class="col-md-9">
             <div id="chart-container">
                 <h2>Some chart here!</h2>
             </div>

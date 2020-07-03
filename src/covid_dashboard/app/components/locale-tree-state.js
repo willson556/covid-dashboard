@@ -13,7 +13,6 @@ export default class LocaleTreeStateComponent extends Component {
 
     @action
     expandState() {
-        console.log('expand state');
         this.showCounties = !this.showCounties;
     }
 

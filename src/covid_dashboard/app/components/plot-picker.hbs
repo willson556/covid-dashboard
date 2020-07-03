@@ -1,0 +1,5 @@
+<ul class="list-group overflow-auto" id="{{@id}}">
+    {{#each config.availablePlots as |plot|}}
+        <PlotPickerEntry @plot={{plot}} />
+    {{/each}}
+</ul>
