@@ -2,7 +2,7 @@ import Service from '@ember/service';
 import { tracked } from '@glimmer/tracking';
 
 export class Plot {
-    id = 0;
+    id = '';
     name = '';
 
     constructor(id, name) {
@@ -17,9 +17,9 @@ export default class ConfigService extends Service {
     @tracked plots = [];
 
     availablePlots = [
-        new Plot(0, "Deaths per Day"),
-        new Plot(1, "Cases per Day"),
-        new Plot(2, "Hospitalizations"),
-        new Plot(3, "Positive Test Rate"),
+        new Plot('deaths', "Deaths per Day"),
+        new Plot('positive', "Cases per Day"),
+        new Plot('hospitalizations', "Hospitalizations"),
+        new Plot('tests', "Positive Test Rate"),
     ];
 }

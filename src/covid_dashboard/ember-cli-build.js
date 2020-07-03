@@ -7,6 +7,9 @@ module.exports = function(defaults) {
     'ember-bootstrap': {
       'bootstrapVersion': 4,
       'importBootstrapCSS': true
+    },
+    'emberHighCharts': {
+      includeHighCharts: true
     }
   });
 

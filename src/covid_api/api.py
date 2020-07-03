@@ -15,8 +15,8 @@ repository = DataRepository()
 get_data_args = {
     'start_time': fields.DateTime(format='%Y-%m-%d'),
     'end_time': fields.DateTime(format='%Y-%m-%d'),
-    'states': fields.List(fields.Str()),
-    'fips': fields.List(fields.Int()),
+    'states': fields.List(fields.Int()),
+    'counties': fields.List(fields.Int()),
 }
 
 class DataEndpoint(Resource):
@@ -29,9 +29,9 @@ class DataEndpoint(Resource):
             for state in args['states']:
                 repository.add_state_data(data, state)
         
-        if 'fips' in args:
-            for locale in args['fips']:
-                repository.add_county_data(data, locale)
+        if 'counties' in args:
+            for county in args['counties']:
+                repository.add_county_data(data, county)
         return data.to_json()
 
 class StateEndpoint(Resource):

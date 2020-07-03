@@ -1,0 +1,3 @@
+{{#each (await plots) as |plot|}}
+    {{high-charts chartOptions=plot.options content=plot.data}}
+{{/each}}

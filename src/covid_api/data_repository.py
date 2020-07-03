@@ -95,7 +95,8 @@ class DataRepository(object):
         data.deaths[locale.name] = county_data["deaths"].diff().smooth()
         data.positive[locale.name] = county_data["cases"].diff().smooth()
 
-    def add_state_data(self, data: Data, state_abbrev):
+    def add_state_data(self, data: Data, state_id):
+        state_abbrev = self.get_state_data()[state_id - 1]['abbrev']
         state_data = get_state_level_data().groupby('state').get_group(state_abbrev)
 
         locale = Locale()
