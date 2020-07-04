@@ -8,6 +8,12 @@ export default class ChartManagerComponent extends Component {
     @service('plot-data') plotData;
     
     get plots() {
-        return this.plotData.getPlots(this.config.states, this.config.counties, this.config.plots);
+        return this.plotData.getPlots(
+            this.config.states,
+            this.config.counties,
+            this.config.plots,
+            this.config.startDate,
+            this.config.endDate,
+            this.config.perCapita);
     }
 }

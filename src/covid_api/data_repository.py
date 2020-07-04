@@ -68,12 +68,19 @@ class Data(object):
     def _roundtrip(self, obj: pd.DataFrame):
         return json.loads(obj.to_json())
 
+    def _process_type(self, obj: pd.DataFrame):
+        data = self._roundtrip(obj)
+        for locale in self.locales:
+            if locale.name not in data:
+                data[locale.name] = {}
+        return data
+
     def to_json(self):
         data = {
-            "deaths" : self._roundtrip(self.deaths),
-            "hospitalized": self._roundtrip(self.hospitalized),
-            "positive": self._roundtrip(self.positive),
-            "tests": self._roundtrip(self.tests),
+            "deaths" : self._process_type(self.deaths),
+            "hospitalized": self._process_type(self.hospitalized),
+            "positive": self._process_type(self.positive),
+            "tests": self._process_type(self.tests),
             "locales": [locale.__dict__ for locale in self.locales],
         }
 
@@ -107,7 +114,7 @@ class DataRepository(object):
         data.deaths[state_abbrev] = state_data["deathIncrease"].smooth()
         data.hospitalized[state_abbrev] = state_data["hospitalizedCurrently"].smooth()
         data.positive[state_abbrev] = state_data["positiveIncrease"].smooth()
-        data.tests = state_data["totalTestResultsIncrease"].smooth()
+        data.tests[state_abbrev] = state_data["totalTestResultsIncrease"].smooth()
 
     def get_state_data(self):
         counter = 0

@@ -15,11 +15,13 @@ export default class ConfigService extends Service {
     @tracked states = [];
     @tracked counties = [];
     @tracked plots = [];
+    @tracked startDate = "2020-03-01";
+    @tracked endDate = new Date().toISOString().substring(0,10);
+    @tracked perCapita = true;
 
     availablePlots = [
         new Plot('deaths', "Deaths per Day"),
         new Plot('positive', "Cases per Day"),
-        new Plot('hospitalizations', "Hospitalizations"),
-        new Plot('tests', "Positive Test Rate"),
+        new Plot('hospitalized', "Hospitalizations"),
     ];
 }

@@ -10,7 +10,7 @@
         </svg>
     {{/if}}
 </span>
-{{ @state.abbrev }}
+{{ @state.name }}
 
 <Input @type="checkbox" style="float: right;" @checked={{this.isChecked}} {{on "click" this.onChecked }} />
 {{#if this.showCounties}}

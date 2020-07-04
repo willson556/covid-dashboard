@@ -2,11 +2,11 @@
 <div class="container-fluid">
     <style>
         #locale-tree {
-            height: 60vh;
+            height: 70vh;
         }
 
         #plot-picker {
-            height: 25vh;
+            height: 15vh;
         }
     </style>
 
@@ -22,9 +22,14 @@
             <LocaleTree class="overflow-auto" @states={{@model}} @id="locale-tree" />
         </div>
         <div id="right-col" class="col-md-9">
-            <div id="chart-container">
-                <h2>Some chart here!</h2>
-                <ChartManager />
+            <div class="row">
+                <div class="col-md-12">
+                    <Options />
+                    <hr>
+                </div>
+                <div class="col-md-12">
+                    <ChartManager />
+                </div>
             </div>
         </div>
     </div>

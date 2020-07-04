@@ -12,6 +12,15 @@ export const myQueryParams = new QueryParams({
     'config.plots': {
         defaultValue: []
     },
+    'config.startDate': {
+        defaultValue: "2020-03-01"
+    },
+    'config.endDate': {
+        defaultValue: new Date().toISOString().substring(0,10)
+    },
+    'config.perCapita': {
+        defaultValue: true
+    }
 });
 
 const { service } = Ember.inject;

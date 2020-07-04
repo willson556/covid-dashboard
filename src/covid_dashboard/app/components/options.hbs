@@ -1,0 +1,18 @@
+<h3>Options</h3>
+<form>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="input-group">
+                <div class="input-group-prepend"><span class="input-group-text">Date Range</span></div>
+                <Input @type="date" class="form-control" @value={{this.config.startDate}} />
+                <Input @type="date" class="form-control" @value={{this.config.endDate}} />
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-check">
+                <Input @type="checkbox" class="form-check-input" id="per-capita" @checked={{this.isPerCapita}} {{on "click" this.onPerCapitaChanged }} />
+                <label class="form-check-label" for="per-capita">Per Capita</label>
+            </div>
+        </div>
+    </div>
+</form>

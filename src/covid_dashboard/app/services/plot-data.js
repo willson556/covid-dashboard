@@ -21,12 +21,9 @@ class Plot {
 
 export default class PlotDataService extends Service {
     @service config;
-
-    startTime = "2020-05-01";
-    endTime = "2020-07-01";
     
-    async _getData(states, counties) {
-        var url = `/api/data?start_time=${this.startTime}&end_time=${this.endTime}`;
+    async _getData(states, counties, startDate, endDate) {
+        var url = `/api/data?start_time=${startDate}&end_time=${endDate}`;
 
         states.forEach(state => {
             url += `&states=${state}`
@@ -42,14 +39,14 @@ export default class PlotDataService extends Service {
         return data;
     }
 
-    _convertSeriesData(data) {
+    _convertSeriesData(data, divisor) {
         return {
             name : data[0],
-            data: Object.entries(data[1]).map(p => [ parseInt(p[0]), p[1] ])
+            data: Object.entries(data[1]).map(p => [ parseInt(p[0]), p[1] / divisor ])
         };
     }
 
-    _getPlot(title, data) {
+    _getPlot(title, data, perCapita, locales) {
         let chartOptions = {
             chart: {
                 type: 'line' //?
@@ -63,17 +60,18 @@ export default class PlotDataService extends Service {
             yAxis: {}
         };
 
-        let chartData = Object.entries(data).map(this._convertSeriesData);
+        var counter = 0;
+        let chartData = Object.entries(data).map(d => this._convertSeriesData(d, perCapita ? locales[counter++].population : 1));
 
         return new Plot(chartOptions, chartData);
     }
 
-    async getPlots(states, counties, plots) {
-        let data = await this._getData(states, counties);
+    async getPlots(states, counties, plots, startDate, endDate, perCapita) {
+        let data = await this._getData(states, counties, startDate, endDate);
 
         return plots.map(plot => {
             let plotDefinition = this.config.availablePlots.find(p => p.id == plot)
-            return this._getPlot(plotDefinition.name, data[plotDefinition.id]);
+            return this._getPlot(plotDefinition.name, data[plotDefinition.id], perCapita, data.locales);
         });
     }
 }
