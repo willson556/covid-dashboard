@@ -1,0 +1,20 @@
+version: '3.3'
+
+services:
+  python:
+    build: .
+    ports:
+        - 8080:8080
+    volumes:
+        - static_volume:/app/static
+
+  nginx:
+    build: ./containers/nginx
+    ports:
+        - 1337:80
+    depends_on:
+        - python
+    volumes:
+        - static_volume:/home/static
+volumes:
+  static_volume:

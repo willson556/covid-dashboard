@@ -1,16 +1,24 @@
-FROM sergiolepore/ember-cli:3.1.4-node_10.1.0 AS builder
+FROM node:14.5.0 AS builder
+RUN npm install -g ember-cli
 
 ADD src/covid_dashboard /opt/covid_dashboard
-
 WORKDIR /opt/covid_dashboard
-RUN ember build --environment=production --output-path ../static
+RUN npm install
+RUN ember build --environment=production --output-path /build-output
+RUN ls /build-output
 
-FROM python3.8
-COPY src/covid_api /covid_api
-COPY production.env /covid_api/.env
-COPY requirements.txt /covid_api
+FROM python:3.8
 
-WORKDIR /covid_api
+COPY requirements.txt /app/covid_api/
+WORKDIR /app/covid_api
 RUN pip install -r requirements.txt
-RUN pip install waitress
-CMD ["waitress-serve", "--call", "covid_api"]
+
+COPY src/covid_api .
+COPY production.env .env
+COPY --from=builder /build-output static/
+
+WORKDIR /app
+COPY src/wsgi.py .
+COPY prod_run.sh .
+EXPOSE 8080
+CMD ["bash", "prod_run.sh"]

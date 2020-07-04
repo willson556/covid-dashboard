@@ -1,8 +1,10 @@
 import csv
 import io
 import json
+import os
 from datetime import datetime
 from jsonpickle import encode
+from pathlib import Path
 
 import pandas as pd
 import requests
@@ -19,6 +21,10 @@ def smooth(self):
 pd.Series.smooth = smooth
 del smooth
 
+def get_state_data_path():
+    script_path = os.path.dirname(os.path.realpath(__file__))
+    return str(Path(script_path) / 'static-data/state-population-est2019.csv')
+
 @cache.memoize(timeout=3600)
 def get_state_level_data() -> pd.DataFrame:
     data = requests.get(TIME_SERIES_STATE_URL).json()
@@ -29,7 +35,7 @@ def get_state_level_data() -> pd.DataFrame:
 
 @cache.memoize(timeout=86400)
 def get_state_populations() -> pd.DataFrame:
-    state_populations = pd.read_csv("src/covid_api/static-data/state-population-est2019.csv", index_col='State', usecols=['State', 'StateFull', '2019'], keep_default_na=False, thousands=',', sep=',', engine='python')
+    state_populations = pd.read_csv(get_state_data_path(), index_col='State', usecols=['State', 'StateFull', '2019'], keep_default_na=False, thousands=',', sep=',', engine='python')
     state_populations["2019"] = state_populations["2019"].astype('int')
     return state_populations
 

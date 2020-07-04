@@ -7,7 +7,6 @@ from flask_restful import Api
 cache = Cache()
 api = None
 
-
 from .api import DataEndpoint, StateEndpoint, CountyEndpoint, CountiesForStateEndpoint
 
 load_dotenv()
@@ -19,6 +18,7 @@ api.add_resource(StateEndpoint, '/api/states')
 api.add_resource(CountyEndpoint, "/api/counties")
 api.add_resource(CountiesForStateEndpoint, "/api/counties_for_state")
 
+
 @app.errorhandler(400)
 @app.errorhandler(422)
 def handle_error(err):
@@ -29,7 +29,3 @@ def handle_error(err):
         return jsonify({"errors": messages}), err.code, headers
     else:
         return jsonify({"errors": messages}), err.code
-
-@app.route('/')
-def main_page():
-    return render_template('index.html')
