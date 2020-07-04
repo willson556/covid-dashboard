@@ -4,6 +4,7 @@ import json
 import os
 from datetime import datetime
 from jsonpickle import encode
+from math import isnan
 from pathlib import Path
 
 import pandas as pd
@@ -79,6 +80,9 @@ class Data(object):
         for locale in self.locales:
             if locale.name not in data:
                 data[locale.name] = {}
+            
+            data[locale.name] = { k: v for k, v in data[locale.name].items() if v != None }
+        
         return data
 
     def to_json(self):
