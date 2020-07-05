@@ -21,7 +21,7 @@ class Plot {
 
 export default class PlotDataService extends Service {
     @service config;
-    
+
     async _getData(states, counties, startDate, endDate) {
         var url = `/api/data?start_time=${startDate}&end_time=${endDate}`;
 
@@ -35,14 +35,17 @@ export default class PlotDataService extends Service {
 
         let response = await fetch(url);
         let data = await response.json();
-        
+
         return data;
     }
 
     _convertSeriesData(data, divisor) {
         return {
-            name : data[0],
-            data: Object.entries(data[1]).map(p => [ parseInt(p[0]), p[1] / divisor ])
+            name: data[0],
+            data: Object.entries(data[1]).map(p => [parseInt(p[0]), p[1] / divisor]),
+            marker: {
+                enabled: false
+            }
         };
     }
 
