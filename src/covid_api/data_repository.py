@@ -69,7 +69,7 @@ class Data(object):
         self.deaths = get_empty_dataframe(start_time, end_time)
         self.hospitalized = get_empty_dataframe(start_time, end_time)
         self.positive = get_empty_dataframe(start_time, end_time)
-        self.tests = get_empty_dataframe(start_time, end_time)
+        self.positiveRate = get_empty_dataframe(start_time, end_time)
         self.locales = []
 
     def _roundtrip(self, obj: pd.DataFrame):
@@ -90,7 +90,7 @@ class Data(object):
             "deaths" : self._process_type(self.deaths),
             "hospitalized": self._process_type(self.hospitalized),
             "positive": self._process_type(self.positive),
-            "tests": self._process_type(self.tests),
+            "positiveRate": self._process_type(self.positiveRate),
             "locales": [locale.__dict__ for locale in self.locales],
         }
 
@@ -124,7 +124,7 @@ class DataRepository(object):
         data.deaths[state_abbrev] = state_data["deathIncrease"].smooth()
         data.hospitalized[state_abbrev] = state_data["hospitalizedCurrently"].smooth()
         data.positive[state_abbrev] = state_data["positiveIncrease"].smooth()
-        data.tests[state_abbrev] = state_data["totalTestResultsIncrease"].smooth()
+        data.positiveRate[state_abbrev] = ((state_data["positiveIncrease"] * 100) / state_data["totalTestResultsIncrease"]).smooth()
 
     def get_state_data(self):
         counter = 0

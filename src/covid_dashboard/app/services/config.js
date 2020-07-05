@@ -5,11 +5,13 @@ export class Plot {
     id = '';
     name = '';
     yAxisLabel = '';
+    perCapitaCorrectionApplies = true;
 
-    constructor(id, name, yAxisLabel) {
+    constructor(id, name, yAxisLabel, perCapitaCorrectionApplies) {
         this.id = id;
         this.name = name;
         this.yAxisLabel = yAxisLabel;
+        this.perCapitaCorrectionApplies = perCapitaCorrectionApplies;
     }
 }
 
@@ -22,8 +24,9 @@ export default class ConfigService extends Service {
     @tracked perCapita = true;
 
     availablePlots = [
-        new Plot('positive', "Positive Test Results per Day", "Positive Test Results"),
-        new Plot('deaths', "Deaths per Day", "Deaths"),
-        new Plot('hospitalized', "Cumulative Hospitalizations", "Persons in Hospital"),
+        new Plot('positive', "Positive Test Results per Day", "Positive Test Results", true),
+        new Plot('positiveRate', "Positive Test Rate", "% of Tests Returning a Positive Result", false),
+        new Plot('deaths', "Deaths per Day", "Deaths", true),
+        new Plot('hospitalized', "Cumulative Hospitalizations", "Persons in Hospital", true),
     ];
 }

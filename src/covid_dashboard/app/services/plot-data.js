@@ -5,7 +5,7 @@ import { inject as service } from '@ember/service';
 //     deaths = {};
 //     hospitalized = {};
 //     positive = {};
-//     tests = {};
+//     positiveRate = {};
 //     locales = {};
 // }
 
@@ -49,20 +49,22 @@ export default class PlotDataService extends Service {
         };
     }
 
-    _getPlot(title, data, perCapita, locales, yAxisLabel) {
+    _getPlot(plotDefinition, data, perCapita, locales) {
+        perCapita &= plotDefinition.perCapitaCorrectionApplies;
+
         let chartOptions = {
             chart: {
                 type: 'line' //?
             },
             title: {
-                text: title
+                text: plotDefinition.title
             },
             xAxis: {
                 type: 'datetime'
             },
             yAxis: {
                 title: {
-                    text: yAxisLabel + (perCapita ? ' per Capita' : '')
+                    text: plotDefinition.yAxisLabel + (perCapita ? ' per Capita' : '')
                 },
             },
         };
@@ -78,7 +80,7 @@ export default class PlotDataService extends Service {
 
         return plots.map(plot => {
             let plotDefinition = this.config.availablePlots.find(p => p.id == plot)
-            return this._getPlot(plotDefinition.name, data[plotDefinition.id], perCapita, data.locales, plotDefinition.yAxisLabel);
+            return this._getPlot(plotDefinition, data[plotDefinition.id], perCapita, data.locales);
         });
     }
 }
