@@ -13,10 +13,10 @@ export const myQueryParams = new QueryParams({
         defaultValue: []
     },
     'config.startDate': {
-        defaultValue: "2020-03-01"
+        defaultValue: ""
     },
     'config.endDate': {
-        defaultValue: new Date().toISOString().substring(0,10)
+        defaultValue: ""
     },
     'config.perCapita': {
         defaultValue: true

@@ -12,16 +12,16 @@ export class Plot {
 }
 
 export default class ConfigService extends Service {
-    @tracked states = [];
+    @tracked states = ['3', '5', '10', '33']; // AZ, CA, FL, NY
     @tracked counties = [];
-    @tracked plots = [];
+    @tracked plots = ['positive', 'deaths'];
     @tracked startDate = "2020-03-01";
-    @tracked endDate = new Date().toISOString().substring(0,10);
+    @tracked endDate = new Date().toISOString().substring(0, 10);
     @tracked perCapita = true;
 
     availablePlots = [
-        new Plot('deaths', "Deaths per Day"),
         new Plot('positive', "Cases per Day"),
+        new Plot('deaths', "Deaths per Day"),
         new Plot('hospitalized', "Hospitalizations"),
     ];
 }
