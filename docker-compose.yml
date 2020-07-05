@@ -3,6 +3,7 @@ version: '3.3'
 services:
   python:
     build: .
+    restart: always
     ports:
         - 8080:8080
     volumes:
@@ -10,6 +11,7 @@ services:
 
   nginx:
     build: ./containers/nginx
+    restart: always
     ports:
         - 1337:80
     depends_on:
