@@ -150,3 +150,8 @@ li>ul {
     margin-top: 0.5rem;
     margin-left: 1.0rem;
 }
+
+.sidebar-sticky>h3,
+.sidebar-sticky>form>div>label {
+    padding-left: 0.5rem !important;
+}
