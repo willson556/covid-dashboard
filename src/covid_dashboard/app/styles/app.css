@@ -1,9 +1,129 @@
-#locale-tree {
-    height: 70vh;
+main {
+    padding-top: 1.0rem;
 }
 
-#plot-picker {
-    height: 15vh;
+.container-fluid {
+    min-height: calc(100vh - (75px + 80px));
+    flex: 1 1 auto;
+}
+
+#sticky-footer {
+    min-height: 80px;
+    padding: 2px;
+}
+
+date-input-polyfill[data-open=true] {
+    z-index: 5000 !important;
+}
+
+
+/*
+ * Navbar
+ */
+
+nav>div>h3 {
+    padding-top: 1.0rem;
+}
+
+.navbar-brand {
+    color: #fff;
+    padding-top: .75rem;
+    padding-bottom: .5rem;
+    font-size: 2rem;
+}
+
+@media (max-width: 767.98px) {
+    .navbar-brand {
+        padding-left: calc(40px + 3rem);
+    }
+}
+
+.navbar .navbar-toggler {
+    top: 1rem;
+    left: 1rem;
+}
+
+.navbar .form-control {
+    padding: .75rem 1rem;
+    border-width: 0;
+    border-radius: 0;
+}
+
+.form-control-dark {
+    color: #fff;
+    background-color: rgba(255, 255, 255, .1);
+    border-color: rgba(255, 255, 255, .1);
+}
+
+.form-control-dark:focus {
+    border-color: transparent;
+    box-shadow: 0 0 0 3px rgba(255, 255, 255, .25);
+}
+
+
+/*
+ * Sidebar
+ */
+
+.sidebar {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+    /* Behind the navbar */
+    padding: 75px 0 0;
+    /* Height of navbar */
+    box-shadow: inset -1px 0 0 rgba(0, 0, 0, .1);
+}
+
+@media (max-width: 767.98px) {
+    .sidebar {
+        top: 5rem;
+        padding: 0;
+    }
+}
+
+.sidebar-sticky {
+    position: relative;
+    top: 0;
+    height: calc(100vh - 75px);
+    padding-left: .5rem;
+    padding-top: 0 !important;
+    overflow-x: hidden;
+    overflow-y: auto;
+    /* Scrollable contents if viewport is shorter than content. */
+}
+
+@supports ((position: -webkit-sticky) or (position: sticky)) {
+    .sidebar-sticky {
+        position: -webkit-sticky;
+        position: sticky;
+    }
+}
+
+.sidebar .nav-link {
+    font-weight: 500;
+    color: #333;
+}
+
+.sidebar .nav-link .feather {
+    margin-right: 4px;
+    color: #999;
+}
+
+.sidebar .nav-link.active {
+    color: #007bff;
+}
+
+.sidebar .nav-link:hover .feather,
+.sidebar .nav-link.active .feather {
+    color: inherit;
+}
+
+.sidebar-heading {
+    font-size: .75rem;
+    text-transform: uppercase;
 }
 
 .list-group-item {
@@ -14,7 +134,7 @@
     padding: 0.25rem 0.5rem;
 }
 
-li > ul {
+li>ul {
     margin-top: 0.5rem;
     margin-left: 1.0rem;
 }
