@@ -16,6 +16,12 @@ date-input-polyfill[data-open=true] {
     z-index: 5000 !important;
 }
 
+@media(max-width: 414px) {
+    .extra-header-text {
+        display: none;
+    }
+}
+
 
 /*
  * Navbar
@@ -30,17 +36,23 @@ nav>div>h3 {
     padding-top: .75rem;
     padding-bottom: .5rem;
     font-size: 2rem;
+    padding-left: .5rem;
 }
 
 @media (max-width: 767.98px) {
     .navbar-brand {
-        padding-left: calc(40px + 3rem);
+        padding-left: calc(40px + 3rem) !important;
     }
 }
 
 .navbar .navbar-toggler {
-    top: 1rem;
+    top: 1.5rem;
     left: 1rem;
+    color: #fff;
+}
+
+.navbar-toggler {
+    background-color: rgba(255, 255, 255, .2);
 }
 
 .navbar .form-control {
