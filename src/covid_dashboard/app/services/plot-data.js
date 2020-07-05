@@ -49,7 +49,7 @@ export default class PlotDataService extends Service {
         };
     }
 
-    _getPlot(title, data, perCapita, locales) {
+    _getPlot(title, data, perCapita, locales, yAxisLabel) {
         let chartOptions = {
             chart: {
                 type: 'line' //?
@@ -60,7 +60,11 @@ export default class PlotDataService extends Service {
             xAxis: {
                 type: 'datetime'
             },
-            yAxis: {}
+            yAxis: {
+                title: {
+                    text: yAxisLabel + (perCapita ? ' per Capita' : '')
+                },
+            },
         };
 
         var counter = 0;
@@ -74,7 +78,7 @@ export default class PlotDataService extends Service {
 
         return plots.map(plot => {
             let plotDefinition = this.config.availablePlots.find(p => p.id == plot)
-            return this._getPlot(plotDefinition.name, data[plotDefinition.id], perCapita, data.locales);
+            return this._getPlot(plotDefinition.name, data[plotDefinition.id], perCapita, data.locales, plotDefinition.yAxisLabel);
         });
     }
 }

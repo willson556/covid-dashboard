@@ -4,10 +4,12 @@ import { tracked } from '@glimmer/tracking';
 export class Plot {
     id = '';
     name = '';
+    yAxisLabel = '';
 
-    constructor(id, name) {
+    constructor(id, name, yAxisLabel) {
         this.id = id;
         this.name = name;
+        this.yAxisLabel = yAxisLabel;
     }
 }
 
@@ -20,8 +22,8 @@ export default class ConfigService extends Service {
     @tracked perCapita = true;
 
     availablePlots = [
-        new Plot('positive', "Cases per Day"),
-        new Plot('deaths', "Deaths per Day"),
-        new Plot('hospitalized', "Hospitalizations"),
+        new Plot('positive', "Positive Test Results per Day", "Positive Test Results"),
+        new Plot('deaths', "Deaths per Day", "Deaths"),
+        new Plot('hospitalized', "Cumulative Hospitalizations", "Persons in Hospital"),
     ];
 }
