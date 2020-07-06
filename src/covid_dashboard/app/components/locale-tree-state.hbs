@@ -15,7 +15,6 @@
 </span>
 <Input @type="checkbox" style="float: right;" @checked={{this.isChecked}} {{on "click" this.onChecked }} />
 {{#if this.showCounties}}
-{{log state.counties}}
 <ul class="list-group">
     {{#each @state.counties as |county|}}
     <LocaleTreeCounty @county={{county}} />
