@@ -5,8 +5,6 @@ services:
     build: .
     image: thomaswillson/covid-dashboard-python
     restart: always
-    ports:
-        - 8080:8080
     volumes:
         - static_volume:/app/static
 
