@@ -3,6 +3,7 @@ version: '3.3'
 services:
   python:
     build: .
+    image: thomaswillson/covid-dashboard-python
     restart: always
     ports:
         - 8080:8080
@@ -11,6 +12,7 @@ services:
 
   nginx:
     build: ./containers/nginx
+    image: thomaswillson/covid-dashboard-nginx
     restart: always
     ports:
         - 1337:80
