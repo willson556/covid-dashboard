@@ -57,7 +57,7 @@ export default class PlotDataService extends Service {
                 type: 'line' //?
             },
             title: {
-                text: plotDefinition.title
+                text: plotDefinition.name
             },
             xAxis: {
                 type: 'datetime'
