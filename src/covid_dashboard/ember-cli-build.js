@@ -6,7 +6,10 @@ module.exports = function(defaults) {
     let app = new EmberApp(defaults, {
         'emberHighCharts': {
             includeHighCharts: true
-        }
+        },
+        sourcemaps: {
+            enabled: true,
+        },
     });
 
     app.import('node_modules/bootstrap/dist/css/bootstrap.min.css');

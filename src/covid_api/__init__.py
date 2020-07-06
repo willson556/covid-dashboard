@@ -1,13 +1,20 @@
+import sentry_sdk
 from dotenv import load_dotenv
 from flask import Flask, jsonify
 from flask.templating import render_template
 from flask_caching import Cache
 from flask_restful import Api
+from sentry_sdk.integrations.flask import FlaskIntegration
 
 cache = Cache()
 api = None
 
 from .api import DataEndpoint, StateEndpoint, CountyEndpoint, CountiesForStateEndpoint
+
+sentry_sdk.init(
+    dsn="https://fab78bd9195944a19759518ec953c486@o416772.ingest.sentry.io/5313243",
+    integrations=[FlaskIntegration()]
+)
 
 load_dotenv()
 app = Flask(__name__)
