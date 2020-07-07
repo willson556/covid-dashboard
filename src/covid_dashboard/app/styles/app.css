@@ -155,3 +155,12 @@ li>ul {
 .sidebar-sticky>form>div>label {
     padding-left: 0.5rem !important;
 }
+
+.tooltip-inner {
+    background-color: white;
+    color: black;
+}
+
+.ember-popover {
+    padding: 2px;
+}
