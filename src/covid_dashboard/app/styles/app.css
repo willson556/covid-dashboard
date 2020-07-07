@@ -3,13 +3,13 @@ main {
 }
 
 .container-fluid {
-    min-height: calc(100vh - (75px + 80px));
+    min-height: calc(100vh - (75px + 70px));
     flex: 1 1 auto;
 }
 
 #sticky-footer {
     min-height: 80px;
-    padding: 2px;
+    padding: 0.5rem;
 }
 
 date-input-polyfill[data-open=true] {
