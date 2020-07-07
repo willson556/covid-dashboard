@@ -12,6 +12,12 @@ main {
     padding: 0.5rem;
 }
 
+.state-disclaimer {
+    font-size: smaller;
+    font-style: italic;
+    color: gray;
+}
+
 date-input-polyfill[data-open=true] {
     z-index: 5000 !important;
 }

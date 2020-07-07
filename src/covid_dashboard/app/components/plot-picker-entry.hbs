@@ -1,4 +1,7 @@
 <li class="list-group-item">
-    {{@plot.name}}
+    {{{@plot.name}}}
+    {{#if @plot.stateLevelOnly}}
+    <span class='state-disclaimer'>State level only</span>
+    {{/if}}
     <Input @type="checkbox" style="float: right;" @checked={{this.isChecked}} {{on "click" this.onChecked }} />
 </li>
