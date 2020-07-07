@@ -7,7 +7,8 @@ See the published site at [data.thomasewillson.com](https://data.thomasewillson.
 ## Data Sources
 
 - [The COVID Tracking Project at _The Atlantic_](https://covidtracking.com)
-- [COVID-19 Dashboard by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University](https://github.com/CSSEGISandData/COVID-19)
+- [The New York Times Coronavirus U.S. Tracker](https://www.nytimes.com/interactive/2020/us/coronavirus-us-cases.html) (see their [GitHub](https://github.com/nytimes/covid-19-data) for more details)
+- [COVID-19 Dashboard by the Center for Systems Science and Engineering (CSSE) at Johns Hopkins University](https://github.com/CSSEGISandData/COVID-19) (for locale data)
 
 ## Build and Run
 
