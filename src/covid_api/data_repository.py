@@ -76,10 +76,14 @@ def get_locale_info() -> pd.DataFrame:
     locale_data = pd.read_csv(io.StringIO(locale_data_csv), index_col='FIPS')
 
     for fips_merge in MERGED_FIPS:
+        merged_population = 0
         locale_data.loc[fips_merge.fake_id] = locale_data.loc[fips_merge.key_id]
 
         for real_id in fips_merge.real_ids:
+            merged_population += locale_data.loc[real_id, 'Population']
             locale_data.drop(real_id, inplace=True)
+
+        locale_data.loc[fips_merge.fake_id, 'Population'] = merged_population
 
     return locale_data
 
