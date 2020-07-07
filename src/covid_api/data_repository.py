@@ -6,6 +6,7 @@ from datetime import datetime
 from jsonpickle import encode
 from math import isnan
 from pathlib import Path
+from operator import itemgetter
 
 import pandas as pd
 import requests
@@ -16,6 +17,35 @@ TIME_SERIES_STATE_URL = "https://covidtracking.com/api/v1/states/daily.json"
 TIME_SERIES_US_CASES_COUNTY_URL = "https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv"
 LOCALE_DATA_URL = "https://raw.githubusercontent.com/CSSEGISandData/COVID-19/master/csse_covid_19_data/UID_ISO_FIPS_LookUp_Table.csv"
 
+class FIPSMerge(object):
+    """A record of several locales that are merged in the NYT dataset.
+    
+    These are assigned a "fake FIPS" ID so they don't have to be treated specially outside this module.
+    Real FIPS IDs are limited to 5 digits so the fake ones will started at 100,000.
+    """
+
+    def __init__(self, fake_id, real_ids, key_id, county, state, disclaimer):
+        """Construct a new FIPSMerge.
+
+        Args:
+            fake_id (int): The assigned fake FIPS id.
+            real_ids ([int]): The read IDs that are grouped.
+            key_id (int): The real ID that the locale data should use.
+            county (string): The county name used in the NYT dataset.
+            state (string): The full state name used in the NYT dataset.
+            disclaimer (string): An explanation of the merge for the user.
+        """
+        self.fake_id = fake_id
+        self.real_ids = real_ids
+        self.key_id = key_id
+        self.county = county
+        self.state = state
+        self.disclaimer = disclaimer
+
+MERGED_FIPS = [
+    FIPSMerge(100_000, [36047, 36061, 36081, 36005, 36085], 36061, "New York City", "New York", 
+        "All cases for the five boroughs of New York City (New York, Kings, Queens, Bronx and Richmond counties) are assigned to a single area called New York City."),
+]
 
 def smooth(self):
     return self.rolling(7, center=True).mean()
@@ -44,15 +74,27 @@ def get_state_populations() -> pd.DataFrame:
 def get_locale_info() -> pd.DataFrame:
     locale_data_csv = requests.get(LOCALE_DATA_URL).text
     locale_data = pd.read_csv(io.StringIO(locale_data_csv), index_col='FIPS')
+
+    for fips_merge in MERGED_FIPS:
+        locale_data.loc[fips_merge.fake_id] = locale_data.loc[fips_merge.key_id]
+
+        for real_id in fips_merge.real_ids:
+            locale_data.drop(real_id, inplace=True)
+
     return locale_data
 
 @cache.memoize(timeout=3600)
 def get_county_level_data() -> pd.DataFrame:
     county_case_data = pd.read_csv(io.StringIO(requests.get(TIME_SERIES_US_CASES_COUNTY_URL).text), index_col='date')
     county_case_data.index = pd.to_datetime(county_case_data.index)
+
+    for fips_merge in MERGED_FIPS:
+        county_case_data.loc[(county_case_data['county'] == fips_merge.county) &
+                         (county_case_data['state'] == fips_merge.state), 'fips'] = fips_merge.fake_id
+
     return county_case_data
 
-@cache.memoize(timeout=60)
+@cache.memoize(timeout=600)
 def get_grouped_county_data():
     return get_county_level_data().groupby('fips')
 
@@ -150,11 +192,15 @@ class DataRepository(object):
 
     def get_available_locales_for_state(self, state_abbrev):
         def transform_locale(key, value):
+            merge = next((merge for merge in MERGED_FIPS if merge.fake_id == key), None)
+            disclaimer = merge.disclaimer if merge != None else ''
+
             return {
                 "id": int(key),
                 "name": value["Admin2"],
                 "full_name": value['Combined_Key'],
                 "population": value['Population'],
+                "disclaimer": disclaimer,
             }
 
 
@@ -163,6 +209,5 @@ class DataRepository(object):
         filtered_locales = locales[(locales['Province_State'] == state) &
                                    (locales['Admin2']) &
                                    (locales["Lat"])].to_dict(orient='index')
-        return [transform_locale(fips, locale) for fips, locale in filtered_locales.items()]
-        
-       
+        return sorted([transform_locale(fips, locale) for fips, locale in filtered_locales.items()], key=itemgetter('name'))
+    
