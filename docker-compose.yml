@@ -7,6 +7,10 @@ services:
     restart: always
     volumes:
         - static_volume:/app/static
+    environment: 
+        - MEMCACHED_SERVER=memcached
+    depends_on:
+        - memcached
 
   nginx:
     build: ./containers/nginx
@@ -18,5 +22,11 @@ services:
         - python
     volumes:
         - static_volume:/home/static
+
+  memcached:
+    image: memcached:1.6.6-alpine
+    restart: always
+    command: memcached -m 256 -I 64m
+
 volumes:
   static_volume:

@@ -1,3 +1,4 @@
+import os
 import sentry_sdk
 from dotenv import load_dotenv
 from flask import Flask, jsonify
@@ -19,7 +20,14 @@ sentry_sdk.init(
 load_dotenv()
 app = Flask(__name__)
 api = Api(app)
-cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+
+cache_server = os.environ.get('MEMCACHED_SERVER')
+if cache_server == None:
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+else:
+    print("Using memcached...")
+    cache.init_app(app, config={'CACHE_TYPE': 'memcached', "CACHE_MEMCACHED_SERVERS": ['memcached']})
+
 api.add_resource(DataEndpoint, '/api/data')
 api.add_resource(StateEndpoint, '/api/states')
 api.add_resource(CountyEndpoint, "/api/counties")

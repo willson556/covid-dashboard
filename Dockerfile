@@ -9,6 +9,8 @@ RUN ls /build-output
 
 FROM python:3.8
 
+RUN apt-get update && apt-get install -y libmemcached-dev
+
 COPY requirements.txt /app/covid_api/
 WORKDIR /app/covid_api
 RUN pip install -r requirements.txt
