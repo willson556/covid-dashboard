@@ -24,7 +24,7 @@ api = Api(app)
 flask_env = os.environ.get('FLASK_ENV', 'production')
 if flask_env == 'production':
     print('Using uWSGI cache...')
-    cache.init_app(app, config={'CACHE_TYPE': 'uwsgi', 'CACHE_UWSGI_NAME': 'default'})
+    cache.init_app(app, config={'CACHE_TYPE': 'covid_api.util.custom_cache.uwsgi_fast', 'CACHE_UWSGI_NAME': 'default'})
 else:
     print('Using simple cache...')
     cache.init_app(app, config={'CACHE_TYPE': 'simple'})
