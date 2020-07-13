@@ -1,3 +1,4 @@
+import os
 import sentry_sdk
 from dotenv import load_dotenv
 from flask import Flask, jsonify
@@ -19,7 +20,15 @@ sentry_sdk.init(
 load_dotenv()
 app = Flask(__name__)
 api = Api(app)
-cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+
+flask_env = os.environ.get('FLASK_ENV', 'production')
+if flask_env == 'production':
+    print('Using uWSGI cache...')
+    cache.init_app(app, config={'CACHE_TYPE': 'uwsgi', 'CACHE_UWSGI_NAME': 'default'})
+else:
+    print('Using simple cache...')
+    cache.init_app(app, config={'CACHE_TYPE': 'simple'})
+
 api.add_resource(DataEndpoint, '/api/data')
 api.add_resource(StateEndpoint, '/api/states')
 api.add_resource(CountyEndpoint, "/api/counties")
