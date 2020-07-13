@@ -20,5 +20,6 @@ COPY --from=builder /build-output static/
 WORKDIR /app
 COPY src/wsgi.py .
 COPY prod_run.sh .
-EXPOSE 8080
+COPY uwsgi.ini .
+EXPOSE 3031
 CMD ["bash", "prod_run.sh"]
