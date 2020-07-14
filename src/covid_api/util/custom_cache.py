@@ -16,30 +16,33 @@ class UWSGIFastCache(UWSGICache):
         return self._memory_cache.storage
 
     def _set(self, key, value, timeout):
-        self._get_cache()[key] = value
+        expires = self._normalize_timeout(timeout)
+        self._get_cache()[key] = (value, expires)
 
     def set(self, key, value, timeout=None):
         self._set(key, value, timeout)
-        super().set(key, value, timeout)
+        super().set(key, (value, timeout), timeout)
     
     def get(self, key):
         in_uwsgi = self.has(key)
 
         if key in self._get_cache():
-            if not in_uwsgi:
+            value, expires = self._get_cache()[key]
+
+            if not in_uwsgi or (expires != 0 and expires > time()):
                 del self._get_cache()[key]
             else:
-                return self._get_cache()[key]
+                return value
         
         if in_uwsgi:
-            value = super().get(key)
-            self._get_cache()[key] = value
+            value, timeout = super().get(key)
+            self._set(key, value, timeout)
             return value
         else:
             return None
     
     def add(self, key, value, timeout=None):
-        if super().add(key, value, timeout):
+        if super().add(key, (value, timeout), timeout):
             self._set(key, value, timeout)
             return True
         
