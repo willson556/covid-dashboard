@@ -17,7 +17,7 @@ class UWSGIFastCache(UWSGICache):
 
     def _set(self, key, value, timeout):
         expires = self._normalize_timeout(timeout)
-        self._get_cache()[key] = (value, expires)
+        self._get_cache()[key] = (value, expires + time())
 
     def set(self, key, value, timeout=None):
         self._set(key, value, timeout)
